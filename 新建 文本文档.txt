@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: #FFB6C1;
+            margin: 0;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        #cake {
+            width: 100px;
+            cursor: pointer;
+            position: absolute;
+            transition: all 0.3s;
+            display: none;
+        }
+        #score {
+            font-size: 40px;
+            color: #FF4500;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+        }
+        #timer {
+            font-size: 30px;
+            color: #8B0000;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+        #startBtn {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: #FF69B4;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div id="score">得分: 0</div>
+    <div id="timer">剩余时间: 60秒</div>
+    <button id="startBtn">开始游戏</button>
+    <img id="cake" src="https://cdn-icons-png.flaticon.com/128/1046/1046784.png">
+
+    <script>
+        let score = 0;
+        let timeLeft = 60;
+        let timer = null;
+        const cake = document.getElementById('cake');
+
+        // 随机位置函数
+        function setRandomPosition() {
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            
+            cake.style.left = Math.random() * maxX + 'px';
+            cake.style.top = Math.random() * maxY + 'px';
+        }
+
+        // 开始游戏
+        function startGame() {
+            // 重置游戏
+            score = 0;
+            timeLeft = 60;
+            document.getElementById('score').textContent = '得分: 0';
+            document.getElementById('timer').textContent = '剩余时间: 60秒';
+            cake.style.display = 'block';
+            setRandomPosition();
+
+            // 定时器
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `剩余时间: ${timeLeft}秒`;
+                
+                if(timeLeft <= 0) {
+                    clearInterval(timer);
+                    cake.style.display = 'none';
+                    alert(`游戏结束！得分：${score}`);
+                }
+            }, 1000);
+        }
+
+        // 事件监听
+        document.getElementById('startBtn').addEventListener('click', startGame);
+        
+        cake.addEventListener('click', () => {
+            if(timeLeft > 0) {
+                score++;
+                document.getElementById('score').textContent = `得分: ${score}`;
+                setRandomPosition();
+            }
+        });
+    </script>
+</body>
+</html>
